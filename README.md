@@ -11,5 +11,5 @@ Eve API:
 https://github.com/Kyria/EsiPy
 
 ZkillBoard API:
-https://github.com/zKillboard/RedisQ 
-https://github.com/zKillboard/zKillboard/wiki/API-(Killmails)
+https://github.com/zKillboard/RedisQ    
+https://github.com/zKillboard/zKillboard/wiki/API-(Killmails)   
