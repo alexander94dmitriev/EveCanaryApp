@@ -1,5 +1,7 @@
 # -*- encoding: utf-8 -*-
 from datetime import datetime
+from time import sleep
+import json
 
 from esipy import App
 from esipy import EsiClient
@@ -242,7 +244,16 @@ def index():
             character_id=current_user.character_id
         )
 
-        char_location = esiclient.request(op)
+        char_location = esiclient.request(op).data
+
+        char_system_info_req = esiapp.op['get_universe_systems_system_id'](system_id=char_location['solar_system_id'])
+        char_system_info = esiclient.request(char_system_info_req).data
+
+        system_stargates = char_system_info['stargates']
+
+        for stargate in system_stargates:
+            char_system_stargate = esiapp.op['get_universe_stargates_stargate_id'](stargate_id=stargate)
+            char_system_stargate = esiclient.request(char_system_stargate).data
 
     return render_template('base.html', **{
         'wallet': wallet,
@@ -252,3 +263,4 @@ def index():
 
 if __name__ == '__main__':
     app.run(port=config.PORT, host=config.HOST)
+
