@@ -150,7 +150,7 @@ def login():
     token = generate_token()
     session['token'] = token
     return redirect(esisecurity.get_auth_uri(
-        scopes=['esi-wallet.read_character_wallet.v1'],
+        scopes=['esi-wallet.read_character_wallet.v1', 'esi-location.read_location.v1', 'publicData'],
         state=token,
     ))
 
@@ -225,6 +225,7 @@ def callback():
 @app.route('/')
 def index():
     wallet = None
+    char_location = None
 
     # if the user is authed, get the wallet content !
     if current_user.is_authenticated:
@@ -237,8 +238,15 @@ def index():
         )
         wallet = esiclient.request(op)
 
+        op = esiapp.op['get_characters_character_id_location'](
+            character_id=current_user.character_id
+        )
+
+        char_location = esiclient.request(op)
+
     return render_template('base.html', **{
         'wallet': wallet,
+        'char_location': char_location,
     })
 
 
