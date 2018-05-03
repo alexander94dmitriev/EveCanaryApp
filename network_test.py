@@ -22,10 +22,13 @@ esiclient = EsiClient(
 # Recursively call function to work with next queue element in LIFO manner
 # The function should stop when you start going out of given range
 def build_graph(root, current_location, max_depth):
+
     if len(queue) == 0:
         return
     longest_depth = nx.dag_longest_path_length(graph, root)
     if longest_depth > max_depth:
+        path = nx.dag_longest_path(graph, root)
+        graph.remove_node(path[-1])
         return
     char_system_info_req = esiapp.op['get_universe_systems_system_id'](system_id=current_location)
     char_system_info = esiclient.request(char_system_info_req).data
@@ -44,8 +47,10 @@ def build_graph(root, current_location, max_depth):
             graph.add_edge(current_location, stargate_destination)
 
         longest_depth = nx.dag_longest_path_length(graph, root)
-        if longest_depth >= max_depth:
-            continue
+        if longest_depth > max_depth:
+            path = nx.dag_longest_path(graph, root)
+            graph.remove_node(path[-1])
+            return
         else:
             queue.append(stargate_destination)
 
@@ -54,6 +59,8 @@ def build_graph(root, current_location, max_depth):
     longest_depth = nx.dag_longest_path_length(graph, root)
     print(longest_depth)
     if longest_depth > max_depth:
+        path = nx.dag_longest_path(graph, root)
+        graph.remove_node(path[-1])
         return
 
     stargate_destination = queue[0]
@@ -64,7 +71,7 @@ def build_graph(root, current_location, max_depth):
 char_location = '30002267'
 queue.append(char_location)
 graph.add_node(char_location)
-build_graph(char_location, char_location, 3)
+build_graph(char_location, char_location, 4)
 
 # Gives you graph max depth
 depth = nx.shortest_path_length(graph, char_location)
