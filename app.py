@@ -254,10 +254,11 @@ def index():
         for stargate in system_stargates:
             char_system_stargate = esiapp.op['get_universe_stargates_stargate_id'](stargate_id=stargate)
             char_system_stargate = esiclient.request(char_system_stargate).data
-
+            stargate_destination = char_system_stargate['destination']['system_id']
+            print('{} -> {}'.format(char_location['solar_system_id'], stargate_destination))
     return render_template('base.html', **{
         'wallet': wallet,
-        'char_location': char_location,
+        'char_location': char_location
     })
 
 
