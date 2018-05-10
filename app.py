@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-from datetime import datetime
+from datetime import datetime, timedelta
 from time import sleep
 import json
 
@@ -212,6 +212,7 @@ def callback():
 
         login_user(user)
         session.permanent = True
+        app.permanent_session_lifetime = timedelta(hours=3)
     except:
         logger.exception("Cannot login the user - uid: %d" % user.character_id)
         db.session.rollback()
