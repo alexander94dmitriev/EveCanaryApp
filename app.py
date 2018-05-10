@@ -212,11 +212,11 @@ def callback():
 
         login_user(user)
         session.permanent = True
-
     except:
         logger.exception("Cannot login the user - uid: %d" % user.character_id)
         db.session.rollback()
         logout_user()
+
 
     return redirect(url_for("index"))
 
@@ -228,12 +228,14 @@ def callback():
 def index():
     wallet = None
     char_location = None
-    current_user.value = 'This is your default value'
 
     if request.method == 'POST':
         print('')
         new_value = request.form['your_value']
-        current_user.value = new_value
+        if 'your_value' not in session:
+            session['your_value'] = new_value
+        else:
+            current_user.value = session['your_value']
     # if the user is authed, get the wallet content !
     if current_user.is_authenticated:
         # give the token data to esisecurity, it will check alone
@@ -260,7 +262,7 @@ def index():
             char_system_stargate = esiapp.op['get_universe_stargates_stargate_id'](stargate_id=stargate)
             char_system_stargate = esiclient.request(char_system_stargate).data
             stargate_destination = char_system_stargate['destination']['system_id']
-            print('{} -> {}'.format(char_location['solar_system_id'], stargate_destination))
+            # print('{} -> {}'.format(char_location['solar_system_id'], stargate_destination))
 
     return render_template('base.html', **{
         'wallet': wallet,
