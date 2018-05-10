@@ -13,3 +13,6 @@ https://github.com/Kyria/EsiPy
 ZkillBoard API:
 https://github.com/zKillboard/RedisQ    
 https://github.com/zKillboard/zKillboard/wiki/API-(Killmails)   
+
+Template:
+https://github.com/Kyria/flask-esipy-example
