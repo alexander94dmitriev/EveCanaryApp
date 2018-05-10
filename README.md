@@ -16,3 +16,9 @@ https://github.com/zKillboard/zKillboard/wiki/API-(Killmails)
 
 Template:
 https://github.com/Kyria/flask-esipy-example
+
+Before the run do:
+
+`export FLASK_APP=app.py`
+
+`flask db upgrade`
