@@ -36,6 +36,15 @@ Your current location is: <strong>{{ char_location }}</strong>
 </dl>
 <br>
 <br>
+<form class="form" method="POST" role="form" id="update_info">
+  First name:<br>
+  <input type="text" name="your_value" value="">
+  <br>
+  <br><br>
+  <input type="submit" value="Submit">
+</form>
+<dt>Your value: </dt><dd>{{ current_user.value }}</dd>
+</body>
 <br>
 <a href="{{ url_for('logout') }}">Logout</a>
 {% endif %}

@@ -224,11 +224,16 @@ def callback():
 # -----------------------------------------------------------------------
 # Index Routes
 # -----------------------------------------------------------------------
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
     wallet = None
     char_location = None
+    current_user.value = 'This is your default value'
 
+    if request.method == 'POST':
+        print('')
+        new_value = request.form['your_value']
+        current_user.value = new_value
     # if the user is authed, get the wallet content !
     if current_user.is_authenticated:
         # give the token data to esisecurity, it will check alone
@@ -256,6 +261,7 @@ def index():
             char_system_stargate = esiclient.request(char_system_stargate).data
             stargate_destination = char_system_stargate['destination']['system_id']
             print('{} -> {}'.format(char_location['solar_system_id'], stargate_destination))
+
     return render_template('base.html', **{
         'wallet': wallet,
         'char_location': char_location
