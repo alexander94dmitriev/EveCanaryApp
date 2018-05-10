@@ -230,12 +230,14 @@ def index():
     char_location = None
 
     if request.method == 'POST':
-        print('')
         new_value = request.form['your_value']
-        if 'your_value' not in session:
+        if new_value:
             session['your_value'] = new_value
-        else:
-            current_user.value = session['your_value']
+
+    if 'your_value' not in session:
+        session['your_value'] = 'Default'
+    current_user.value = session['your_value']
+
     # if the user is authed, get the wallet content !
     if current_user.is_authenticated:
         # give the token data to esisecurity, it will check alone
