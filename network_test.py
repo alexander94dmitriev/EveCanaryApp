@@ -71,7 +71,7 @@ def build_graph(root, current_location, max_depth):
 char_location = '30002267'
 queue.append(char_location)
 graph.add_node(char_location)
-build_graph(char_location, char_location, 5)
+build_graph(char_location, char_location, 3)
 
 # Gives you graph max depth
 depth = nx.shortest_path_length(graph, char_location)
