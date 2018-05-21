@@ -231,7 +231,8 @@ def index():
     char_location = None
     num_of_jumps = None
     hours = None
-
+    char_system_info = None
+    character_id = None
     if request.method == 'POST':
         num_of_jumps = request.form['num_of_jumps']
         if num_of_jumps:
@@ -267,12 +268,12 @@ def index():
 
         char_system_info_req = esiapp.op['get_universe_systems_system_id'](system_id=char_location['solar_system_id'])
         char_system_info = esiclient.request(char_system_info_req).data['name']
-
+        character_id = current_user.character_id
 
     return render_template('base.html', **{
         'wallet': wallet,
         'char_location': char_system_info,
-        'char_avatar_url': 'https://image.eveonline.com/Character/' + str(current_user.character_id) + '_256.jpg',
+        'char_avatar_url': 'https://image.eveonline.com/Character/' + str(character_id) + '_256.jpg',
         'num_of_jumps': num_of_jumps,
         'hours': hours,
         'system_with_kill': None,

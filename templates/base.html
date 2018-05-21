@@ -17,14 +17,15 @@
     Welcome to Eve Canary! This webapp will allow you to find a killmails that happened in a solar systems nearby.
 </strong>
 {% if not current_user.is_authenticated %}
+<br>
 <a href="{{ url_for('login') }}">
     <img src="https://images.contentful.com/idjq7aai9ylm/18BxKSXCymyqY4QKo8KwKe/c2bdded6118472dd587c8107f24104d7/EVE_SSO_Login_Buttons_Small_White.png?w=195&amp;h=30" alt="Log in with eveonline.com" />
 </a>
 
 {% else %}
 
-<table class="fancyTable">
-    <tr style="border: 1px solid black; width: 30%">
+<table class="fancyTable" style="width: 40%">
+    <tr style="border: 1px solid black">
         <td style="border: 1px solid black">
             <div id="char_info">
                 Hello, <strong>{{ current_user.character_name }}</strong>!<br>
@@ -54,7 +55,7 @@
         </td>
     </tr>
     <tr style="border: 1px solid black; width: 30%">
-        <td rowspan="2">
+        <td colspan="2" style="border: 1px solid black; width: 30%">
             <strong>Status:</strong><br>
             {% if system_with_kill %}
                 <div style="color: red">
