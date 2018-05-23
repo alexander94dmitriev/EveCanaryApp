@@ -6,45 +6,72 @@
     <meta http-equiv="X-UA-Compatible" content="IE=10">
     <![endif]-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" content="G. (Kyria) Bisch">
-
+    <link rel="stylesheet" type="text/css" href="css/main.css">
     <title>Eve Canary</title>
 
 </head>
 
-<body>
-
+<body style="background-color: lightslategrey">
+<h1>Eve Canary</h1>
+<strong>
+    Welcome to Eve Canary! This webapp will allow you to find a killmails that happened in a solar systems nearby.
+</strong>
 {% if not current_user.is_authenticated %}
+<br>
 <a href="{{ url_for('login') }}">
     <img src="https://images.contentful.com/idjq7aai9ylm/18BxKSXCymyqY4QKo8KwKe/c2bdded6118472dd587c8107f24104d7/EVE_SSO_Login_Buttons_Small_White.png?w=195&amp;h=30" alt="Log in with eveonline.com" />
 </a>
 
 {% else %}
-Hello <strong>{{ current_user.character_name }}</strong><br>
-Your wallet is currently full of <strong>{{ wallet.data }}</strong> ISKs
-Your current location is: <strong>{{ char_location }}</strong>
-<br>
-<br>
 
-<strong>Your ESI Informations:</strong>
-<dl>
-    <dt>Character ID:</dt><dd>{{ current_user.character_id }}</dd>
-    <dt>Character Owner Hash:</dt><dd>{{ current_user.character_owner_hash }}</dd>
-    <dt>Access Token:</dt><dd>{{ current_user.access_token }}</dd>
-    <dt>Access Token valid until:</dt><dd>{{ current_user.access_token_expires }}</dd>
-    <dt>Refresh Token:</dt><dd>{{ current_user.refresh_token }}</dd>
-</dl>
-<br>
-<br>
-<form class="form" method="POST" role="form" id="update_info">
-  First name:<br>
-  <input type="text" name="your_value" value="">
-  <br>
-  <br><br>
-  <input type="submit" value="Submit">
+<table class="fancyTable" style="width: 40%">
+    <tr style="border: 1px solid black">
+        <td style="border: 1px solid black">
+            <div id="char_info">
+                Hello, <strong>{{ current_user.character_name }}</strong>!<br>
+                Your wallet is currently full of <strong>{{ wallet.data }}</strong> ISKs<br>
+                Your current location is: <strong>{{ char_location }}</strong><br>
+                <img src="{{ char_avatar_url }}" alt="Your avatar">
+            </div>
+        </td>
+        <td style="border: 1px solid black">
+            <div id="char_info">
+                <strong>Settings</strong><br>
+                <div id="description">
+                    You need to specify the number of jumps in order to specify how much solar systems you want to check.
+                    <br>
+                    Also, you need to specify the number of hours to see how long back in time you want to see.
+                </div>
+                <form class="form" method="POST" role="form" id="update_info">
+                  Range of jumps:
+                  <input type="text" name="num_of_jumps" value="{{ num_of_jumps }}">
+                  <br>
+                  For the last hours:
+                  <input type="text" name="hours" value="{{ hours }}">
+                  <br>
+                  <input type="submit" value="Change settings">
+                </form>
+            </div>
+        </td>
+    </tr>
+    <tr style="border: 1px solid black; width: 30%">
+        <td colspan="2" style="border: 1px solid black; width: 30%">
+            <strong>Status:</strong><br>
+            {% if system_with_kill %}
+                <div style="color: red">
+                    Found a kill!
+                    <br>
+                    {{ system_with_kill }}
+                </div>
+            {% else %}
+                Nothing is found
+            {% endif %}
+        </td>
+    </tr>
+</table>
+ <br>
+<form action="{{ url_for('logout') }}">
+    <input type="submit" value="Logout" />
 </form>
-<dt>Your value: </dt><dd>{{ current_user.value }}</dd>
-</body>
-<br>
-<a href="{{ url_for('logout') }}">Logout</a>
 {% endif %}
+</body>

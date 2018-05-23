@@ -229,17 +229,27 @@ def callback():
 def index():
     wallet = None
     char_location = None
-
+    num_of_jumps = None
+    hours = None
+    char_system_info = None
+    character_id = None
     if request.method == 'POST':
-        new_value = request.form['your_value']
-        if new_value:
-            session['your_value'] = new_value
+        num_of_jumps = request.form['num_of_jumps']
+        if num_of_jumps:
+            session['num_of_jumps'] = num_of_jumps
+        hours = request.form['hours']
+        if hours:
+            session['hours'] = hours
 
-    if 'your_value' not in session:
-        session['your_value'] = 'Default'
-    current_user.value = session['your_value']
+    if 'num_of_jumps' not in session:
+        session['num_of_jumps'] = '1'
+    num_of_jumps = session['num_of_jumps']
 
-    # if the user is authed, get the wallet content !
+    if 'hours' not in session:
+        session['hours'] = '1'
+    hours = session['hours']
+
+
     if current_user.is_authenticated:
         # give the token data to esisecurity, it will check alone
         # if the access token need some update
@@ -257,19 +267,16 @@ def index():
         char_location = esiclient.request(op).data
 
         char_system_info_req = esiapp.op['get_universe_systems_system_id'](system_id=char_location['solar_system_id'])
-        char_system_info = esiclient.request(char_system_info_req).data
-
-        system_stargates = char_system_info['stargates']
-
-        for stargate in system_stargates:
-            char_system_stargate = esiapp.op['get_universe_stargates_stargate_id'](stargate_id=stargate)
-            char_system_stargate = esiclient.request(char_system_stargate).data
-            stargate_destination = char_system_stargate['destination']['system_id']
-            # print('{} -> {}'.format(char_location['solar_system_id'], stargate_destination))
+        char_system_info = esiclient.request(char_system_info_req).data['name']
+        character_id = current_user.character_id
 
     return render_template('base.html', **{
         'wallet': wallet,
-        'char_location': char_location
+        'char_location': char_system_info,
+        'char_avatar_url': 'https://image.eveonline.com/Character/' + str(character_id) + '_256.jpg',
+        'num_of_jumps': num_of_jumps,
+        'hours': hours,
+        'system_with_kill': None,
     })
 
 
