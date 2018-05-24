@@ -5,6 +5,7 @@
 # Step 3: Continue checking for recent kills (and make comparisons)
 
 import threading
+import time
 from network_test import build_graph_wrapper
 from zkillboard_info import get_Zkillboard_data
 
@@ -19,6 +20,7 @@ def gather_systems(location, jumps):
 # Searches all systems to see if there was hostile activity recently
 def check_for_danger(systems_to_check, time_range):
     systems = get_Zkillboard_data(systems_to_check, time_range)
+    systems = sorted(systems)
 
     if systems:
         report_danger(systems)
@@ -32,22 +34,24 @@ def report_danger(systems_to_report):
 
 #Go into "refresh mode", where every X seconds, zkillboard is queried again.
 def refresh_scan(systems_to_check, rate, time_range):
-    threading.Timer(rate, refresh_scan).start()
+    #threading.Timer(rate, refresh_scan, [systems_to_check, rate, time_range]).start()
     check_for_danger(systems_to_check, time_range)
 
 
 #default parameters
 char_location = '30001005'
 num_jumps = 2
-refresh_rate = 15.0
-initial_time = 4
-recur_time = .016
+refresh_rate = 60.0
+initial_time = 240
+recur_time = 1
 
 #initial check
 adj_systems = gather_systems(char_location, num_jumps)
 check_for_danger(adj_systems, initial_time)
 
 print("Onto recurrence: \n")
+
+time.sleep(10)
 
 #recurring checks
 refresh_scan(adj_systems, refresh_rate, recur_time)
