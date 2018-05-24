@@ -21,7 +21,7 @@ esiclient = EsiClient(
 # When done looping through stargates, pop current location node, you done here
 # Recursively call function to work with next queue element in LIFO manner
 # The function should stop when you start going out of given range
-def build_graph(root, current_location, max_depth, adjLocs):
+def build_graph(root, current_location, max_depth):
 
     if len(queue) == 0:
         return
@@ -38,10 +38,6 @@ def build_graph(root, current_location, max_depth, adjLocs):
         char_system_stargate = esiapp.op['get_universe_stargates_stargate_id'](stargate_id=stargate)
         char_system_stargate = esiclient.request(char_system_stargate).data
         stargate_destination = str(char_system_stargate['destination']['system_id'])
-        print("INTERMITENT PRINT:" + "\n")
-        print(adjLocs)
-        if(stargate_destination not in adjLocs):
-            adjLocs.append(stargate_destination)
         nodes = list(graph.nodes)
 
         # We want to avoid cycles if we want to use dag_longest_path_length, so we want to work with destination that
@@ -68,19 +64,21 @@ def build_graph(root, current_location, max_depth, adjLocs):
         return
 
     stargate_destination = queue[0]
-    build_graph(root, stargate_destination, max_depth, adjLocs)
+    build_graph(root, stargate_destination, max_depth)
+
+def build_graph_wrapper(char_location='30002267', num_of_jumps=2):
+    # Current location of Kaleb Plaude
+    queue.append(char_location)
+    graph.add_node(char_location)
+    build_graph(char_location, char_location, num_of_jumps)
+
+    # Gives you graph max depth
+    depth = nx.shortest_path_length(graph, char_location)
+    longest_depth = max(depth.values())
+    print("Total depth: {}".format(longest_depth))
+
+    return graph
 
 
-# Current location of Kaleb Plaude
-char_location = '30002267'
-queue.append(char_location)
-graph.add_node(char_location)
-#build_graph(char_location, char_location, 1)
-
-# Gives you graph max depth
-depth = nx.shortest_path_length(graph, char_location)
-longest_depth = max(depth.values())
-print("Total depth: {}".format(longest_depth))
-
-nx.draw(graph, with_labels=True)
-plt.show()
+#nx.draw(build_graph_wrapper(), with_labels=True)
+#plt.show()
