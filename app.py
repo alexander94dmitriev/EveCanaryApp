@@ -1,3 +1,6 @@
+"""
+    This code is released under an MIT license
+"""
 # -*- encoding: utf-8 -*-
 from datetime import datetime, timedelta
 from esipy import App

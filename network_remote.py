@@ -1,3 +1,6 @@
+"""
+    This code is released under an MIT license
+"""
 import networkx as nx
 from esipy import App
 from esipy import EsiClient

@@ -1,3 +1,6 @@
+"""
+    This code is released under an MIT license
+"""
 import urllib.request
 import json
 import datetime

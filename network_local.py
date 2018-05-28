@@ -1,3 +1,6 @@
+"""
+    This code is released under an MIT license
+"""
 import networkx as nx
 import matplotlib.pyplot as plt
 import json

@@ -3,11 +3,15 @@
 #   Alert user if there is potential danger
 #   Alert user if there is NO potential danger
 # Step 3: Continue checking for recent kills (and make comparisons)
-
+"""
+    This code is released under an MIT license
+"""
 from network_local import build_graph_wrapper
 from zkillboard_info import get_Zkillboard_data
 import threading
 import time
+from os import path
+import json
 
 
 # Creates the list of adjacent systems, including base system
@@ -38,8 +42,6 @@ def refresh_scan(systems_to_check, rate, time_range):
     check_for_danger(systems_to_check, time_range)
 
 def scan_systems(char_location = '30001005', num_jumps = 2, refresh_rate = 60., initial_time = 240, recur_time = 1):
-    #default parameters
-
 
     #initial check
     adj_systems = gather_systems(char_location, num_jumps)
@@ -52,7 +54,7 @@ def scan_systems(char_location = '30001005', num_jumps = 2, refresh_rate = 60., 
     #recurring checks
     refresh_scan(adj_systems, refresh_rate, recur_time)
 
-def find_danger_systems(char_location = '30001005', num_jumps = 4, hours=2):
+def find_danger_systems(char_location = '30001005', num_jumps = 2, hours=4):
 
     # Creates the list of adjacent systems, including base system
 
@@ -68,6 +70,16 @@ def find_danger_systems(char_location = '30001005', num_jumps = 4, hours=2):
         if dangerSystem:
             dangerSystems.append(dangerSystem)
 
-    return dangerSystems
+    return get_system_names(dangerSystems)
+
+def get_system_names(systems):
+    system_names = []
+    with open(path.join(path.dirname(path.abspath(__file__)), 'eve-map.json')) as f:
+        data = json.load(f)
+        for system in systems:
+            system_names.append(data['systems'][str(system)]['name'])
+
+    return system_names
+
 
 # find_danger_systems()
