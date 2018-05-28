@@ -43,6 +43,7 @@
                     Also, you need to specify the number of hours to see how long back in time you want to see.
                 </div>
                 <form class="form" method="POST" role="form" id="update_info">
+                  <input value = "true" type="hidden" name="update_info">
                   Range of jumps:
                   <input type="text" name="num_of_jumps" value="{{ num_of_jumps }}">
                   <br>
@@ -57,15 +58,19 @@
     <tr style="border: 1px solid black; width: 30%">
         <td colspan="2" style="border: 1px solid black; width: 30%">
             <strong>Status:</strong><br>
-            {% if system_with_kill %}
+            {% if systems_with_kill %}
                 <div style="color: red">
                     Found a kill!
                     <br>
-                    {{ system_with_kill }}
+                    {{ systems_with_kill }}
                 </div>
             {% else %}
                 Nothing is found
             {% endif %}
+            <form class="form" method="POST" role="form" id="update_info">
+                  <input value = "true" type="hidden" name="run_app">
+                  <input type="submit" value="Run Analyzer">
+            </form>
         </td>
     </tr>
 </table>
