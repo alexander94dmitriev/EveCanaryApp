@@ -1,8 +1,8 @@
+"""
+    This code is released under an MIT license
+"""
 # -*- encoding: utf-8 -*-
 from datetime import datetime, timedelta
-from time import sleep
-import json
-
 from esipy import App
 from esipy import EsiClient
 from esipy import EsiSecurity
@@ -32,6 +32,8 @@ import hmac
 import logging
 import random
 import time
+
+from danger_systems import find_danger_systems
 
 # logger stuff
 logger = logging.getLogger(__name__)
@@ -229,17 +231,12 @@ def callback():
 def index():
     wallet = None
     char_location = None
+    num_of_jumps = None
+    hours = None
+    character_id = None
+    systems_with_kill = None
 
-    if request.method == 'POST':
-        new_value = request.form['your_value']
-        if new_value:
-            session['your_value'] = new_value
 
-    if 'your_value' not in session:
-        session['your_value'] = 'Default'
-    current_user.value = session['your_value']
-
-    # if the user is authed, get the wallet content !
     if current_user.is_authenticated:
         # give the token data to esisecurity, it will check alone
         # if the access token need some update
@@ -258,18 +255,39 @@ def index():
 
         char_system_info_req = esiapp.op['get_universe_systems_system_id'](system_id=char_location['solar_system_id'])
         char_system_info = esiclient.request(char_system_info_req).data
+        character_id = current_user.character_id
 
-        system_stargates = char_system_info['stargates']
+        if request.method == 'POST':
+            # Change settings
+            if 'update_info' in request.form:
+                num_of_jumps = request.form['num_of_jumps']
+                if num_of_jumps:
+                    session['num_of_jumps'] = num_of_jumps
+                hours = request.form['hours']
+                if hours:
+                    session['hours'] = hours
 
-        for stargate in system_stargates:
-            char_system_stargate = esiapp.op['get_universe_stargates_stargate_id'](stargate_id=stargate)
-            char_system_stargate = esiclient.request(char_system_stargate).data
-            stargate_destination = char_system_stargate['destination']['system_id']
-            # print('{} -> {}'.format(char_location['solar_system_id'], stargate_destination))
+        if 'num_of_jumps' not in session:
+            session['num_of_jumps'] = '1'
+        num_of_jumps = session['num_of_jumps']
 
+        if 'hours' not in session:
+            session['hours'] = '1'
+        hours = session['hours']
+
+        if request.method == 'POST':
+            # Find the danger systems
+            if 'run_app' in request.form:
+                char_location = char_system_info['system_id']
+                systems_with_kill = find_danger_systems(char_location=str(char_location), num_jumps=int(num_of_jumps), hours=int(hours))
+                char_location = char_system_info['name']
     return render_template('base.html', **{
         'wallet': wallet,
-        'char_location': char_location
+        'char_location': char_location,
+        'char_avatar_url': 'https://image.eveonline.com/Character/' + str(character_id) + '_256.jpg',
+        'num_of_jumps': num_of_jumps,
+        'hours': hours,
+        'systems_with_kill': systems_with_kill,
     })
 
 
