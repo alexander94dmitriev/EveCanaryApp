@@ -233,7 +233,6 @@ def index():
     char_location = None
     num_of_jumps = None
     hours = None
-    char_system_info = None
     character_id = None
     systems_with_kill = None
 
@@ -281,10 +280,10 @@ def index():
             if 'run_app' in request.form:
                 char_location = char_system_info['system_id']
                 systems_with_kill = find_danger_systems(char_location=str(char_location), num_jumps=int(num_of_jumps), hours=int(hours))
-
+                char_location = char_system_info['name']
     return render_template('base.html', **{
         'wallet': wallet,
-        'char_location': char_system_info['name'],
+        'char_location': char_location,
         'char_avatar_url': 'https://image.eveonline.com/Character/' + str(character_id) + '_256.jpg',
         'num_of_jumps': num_of_jumps,
         'hours': hours,
