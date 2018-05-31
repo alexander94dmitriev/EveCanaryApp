@@ -281,7 +281,7 @@ def index():
             if 'run_app' in request.form:
                 char_location = char_system_info['system_id']
                 systems_with_kill = find_danger_systems(char_location=str(char_location), num_jumps=int(num_of_jumps), hours=int(hours))
-                current_char_location = char_system_info['name']
+        current_char_location = char_system_info['name']
     return render_template('base.html', **{
         'wallet': wallet,
         'char_location': current_char_location,
