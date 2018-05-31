@@ -4,6 +4,8 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 import json
+import sys
+sys.setrecursionlimit(10000)
 from os import path
 
 graph = nx.DiGraph()
