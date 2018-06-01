@@ -64,6 +64,7 @@ def find_danger_systems(char_location = '30001005', num_jumps = 2, hours=4):
     #systems = list(map(int, systems))
     systems = sorted(systems)
     #systems = systems.sort(key=int)
+    systems = list(split_list_on_chunks(systems))
     dangerSystems = []
     for system in systems:
         dangerSystem = get_Zkillboard_data(system, hours)
@@ -71,6 +72,10 @@ def find_danger_systems(char_location = '30001005', num_jumps = 2, hours=4):
             dangerSystems.append(dangerSystem)
 
     return get_system_names(dangerSystems)
+
+def split_list_on_chunks(list, num=10):
+    for i in range(0, len(list), num):
+        yield list[i:i + num]
 
 def get_system_names(systems):
     system_names = []

@@ -230,7 +230,7 @@ def callback():
 @app.route('/', methods=['GET', 'POST'])
 def index():
     wallet = None
-    char_location = None
+    num_of_kills = 0
     current_char_location = None
     num_of_jumps = None
     hours = None
@@ -282,6 +282,8 @@ def index():
                 char_location = char_system_info['system_id']
                 systems_with_kill = find_danger_systems(char_location=str(char_location), num_jumps=int(num_of_jumps), hours=int(hours))
         current_char_location = char_system_info['name']
+        if systems_with_kill:
+            num_of_kills = systems_with_kill.__len__()
     return render_template('base.html', **{
         'wallet': wallet,
         'char_location': current_char_location,
@@ -289,6 +291,7 @@ def index():
         'num_of_jumps': num_of_jumps,
         'hours': hours,
         'systems_with_kill': systems_with_kill,
+        'num_of_kills': num_of_kills
     })
 
 
