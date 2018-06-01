@@ -154,7 +154,7 @@ def login():
     token = generate_token()
     session['token'] = token
     return redirect(esisecurity.get_auth_uri(
-        scopes=['esi-wallet.read_character_wallet.v1', 'esi-location.read_location.v1', 'publicData'],
+        scopes=['esi-location.read_location.v1', 'publicData'],
         state=token,
     ))
 
@@ -229,7 +229,6 @@ def callback():
 # -----------------------------------------------------------------------
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    wallet = None
     num_of_kills = 0
     current_char_location = None
     num_of_jumps = None
@@ -242,11 +241,6 @@ def index():
         # give the token data to esisecurity, it will check alone
         # if the access token need some update
         esisecurity.update_token(current_user.get_sso_data())
-
-        op = esiapp.op['get_characters_character_id_wallet'](
-            character_id=current_user.character_id
-        )
-        wallet = esiclient.request(op)
 
         op = esiapp.op['get_characters_character_id_location'](
             character_id=current_user.character_id
@@ -285,7 +279,6 @@ def index():
         if systems_with_kill:
             num_of_kills = systems_with_kill.__len__()
     return render_template('base.html', **{
-        'wallet': wallet,
         'char_location': current_char_location,
         'char_avatar_url': 'https://image.eveonline.com/Character/' + str(character_id) + '_256.jpg',
         'num_of_jumps': num_of_jumps,
