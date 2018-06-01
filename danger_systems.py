@@ -8,11 +8,11 @@
 """
 from network_local import build_graph_wrapper
 from zkillboard_info import get_Zkillboard_data
-import threading
 import time
+import winsound
+
 from os import path
 import json
-
 
 # Creates the list of adjacent systems, including base system
 def gather_systems(location, jumps):
@@ -57,21 +57,19 @@ def scan_systems(char_location = '30001005', num_jumps = 2, refresh_rate = 60., 
 def find_danger_systems(char_location = '30001005', num_jumps = 2, hours=4):
 
     # Creates the list of adjacent systems, including base system
-
     systems = list(build_graph_wrapper(char_location, num_jumps))
+    systems = sorted(systems)
+    systems = list(split_list_on_chunks(systems))
 
     # Searches all systems to see if there was hostile activity recently
-    #systems = list(map(int, systems))
-    systems = sorted(systems)
-    #systems = systems.sort(key=int)
-    systems = list(split_list_on_chunks(systems))
-    dangerSystems = []
-    for system in systems:
-        dangerSystem = get_Zkillboard_data(system, hours)
-        if dangerSystem:
-            dangerSystems.append(dangerSystem)
+    danger_systems = []
 
-    return get_system_names(dangerSystems)
+    for system in systems:
+        check_system = get_Zkillboard_data(system, hours)
+        if check_system:
+            danger_systems.append(check_system)
+
+    return get_system_names(danger_systems)
 
 def split_list_on_chunks(list, num=10):
     for i in range(0, len(list), num):
@@ -84,7 +82,9 @@ def get_system_names(systems):
         for system in systems:
             system_names.append(data['systems'][str(system)]['name'])
 
+    if system_names:
+        winsound.PlaySound("beepsound.wav", winsound.SND_FILENAME)
+        winsound.PlaySound("beepsound.wav", winsound.SND_FILENAME)
+        winsound.PlaySound("beepsound.wav", winsound.SND_FILENAME)
+
     return system_names
-
-
-# find_danger_systems()

@@ -7,14 +7,14 @@
     <![endif]-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="css/main.css">
-    <title>Eve Canary</title>
+    <title>EVE Canary</title>
 
 </head>
 
 <body style="background-color: lightslategrey">
-<h1>Eve Canary</h1>
+<h1>EVE Canary</h1>
 <strong>
-    Welcome to Eve Canary! This webapp will allow you to find a killmails that happened in a solar systems nearby.
+    EVE Canary: Find hostile activity near you!
 </strong>
 {% if not current_user.is_authenticated %}
 <br>
@@ -35,25 +35,26 @@
         </td>
         <td style="border: 1px solid black">
             <div id="char_info">
-                <strong>Settings</strong><br>
+                <strong>Settings:</strong><br>
                 <div id="description">
-                    You need to specify the number of jumps in order to specify how much solar systems you want to check.
-                    <br>
-                    Also, you need to specify the number of hours to see how long back in time you want to see.
+                    Specify the number of jumps you want to search, and how far back you want to check.<br><br>
                 </div>
                 <form class="form" method="POST" role="form" id="update_info">
                   <input value = "true" type="hidden" name="update_info">
-                  Range of jumps:
+                  Jump Range:
                   <input type="text" name="num_of_jumps" value="{{ num_of_jumps }}">
                   <br>
-                  For the last hours:
+                  Hours To Check:
                   <input type="text" name="hours" value="{{ hours }}">
-                  <br>
-                  <input type="submit" value="Change settings">
+                  <br><br>
+                  <input type="submit" value="Update Settings">
                 </form>
             </div>
         </td>
     </tr>
+
+    <audio sfx="audio" src=" "></audio>
+
     <tr style="border: 1px solid black; width: 30%">
         <td colspan="2" style="border: 1px solid black; width: 30%">
             <strong>Status:</strong><br>
@@ -64,11 +65,17 @@
                     {{ systems_with_kill }}
                 </div>
             {% else %}
-                Nothing is found
+                No current danger..
             {% endif %}
-            <form class="form" method="POST" role="form" id="update_info">
-                  <input value = "true" type="hidden" name="run_app">
-                  <input type="submit" value="Run Analyzer">
+            <form class="form" method="POST" role="form" id="update_info" onclick="playSound()">
+                <input value="true" type="hidden" name="run_app">
+                <input type="submit" value="Run Analyzer">
+                <script>
+                    function playSound() {
+                        var sound = document.getElementById("audio");
+                        sound.play();
+                    }
+                </script>
             </form>
         </td>
     </tr>
