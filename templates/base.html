@@ -53,8 +53,6 @@
         </td>
     </tr>
 
-    <audio sfx="audio" src=" "></audio>
-
     <tr style="border: 1px solid black; width: 30%">
         <td colspan="2" style="border: 1px solid black; width: 30%">
             <strong>Status:</strong><br>
@@ -66,14 +64,29 @@
                 </div>
             {% else %}
                 No current danger..
+                <br>
             {% endif %}
-            <form class="form" method="POST" role="form" id="update_info" onclick="playSound()">
+            <form class="form" method="POST" role="form" id="update_info">
                 <input value="true" type="hidden" name="run_app">
-                <input type="submit" value="Run Analyzer">
+                <input type="submit" id="mixBut" value="Run Analyzer">
                 <script>
-                    function playSound() {
-                        var sound = document.getElementById("audio");
-                        sound.play();
+                    var mixBut = document.getElementById("mixBut");
+                    var typeChange = document.getElementsByName("run_app");
+
+                    mixBut.addEventListener("click", Start);
+
+                    function Start() {
+                        mixBut.removeEventListener("click", Start);
+                        mixBut.addEventListener("click", Stop);
+                        mixBut.value = "Stop Analyzer";
+                        typeChange.name = "stop_app";
+                    }
+
+                    function Stop() {
+                        mixBut.removeEventListener("click", Stop);
+                        mixBut.addEventListener("click", Start);
+                        mixBut.value = "Run Analyzer";
+                        typeChange.name = "run_app";
                     }
                 </script>
             </form>

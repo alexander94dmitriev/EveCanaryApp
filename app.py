@@ -271,6 +271,10 @@ def index():
         hours = session['hours']
 
         if request.method == 'POST':
+            if 'stop_app' in request.form:
+                print("WE'VE BEEN TOLD TO STOP. \n")
+
+        if request.method == 'POST':
             # Find the danger systems
             if 'run_app' in request.form:
                 char_location = char_system_info['system_id']

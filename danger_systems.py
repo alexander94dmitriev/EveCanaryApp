@@ -29,13 +29,6 @@ def check_for_danger(systems_to_check, time_range):
     if systems:
         report_danger(systems)
 
-
-#if hostile activity, inform the user (No alert because this is a history search)
-def report_danger(systems_to_report):
-    print("The following systems are dangerous: \n")
-    print(systems_to_report)
-
-
 #Go into "refresh mode", where every X seconds, zkillboard is queried again.
 def refresh_scan(systems_to_check, rate, time_range):
     #threading.Timer(rate, refresh_scan, [systems_to_check, rate, time_range]).start()
