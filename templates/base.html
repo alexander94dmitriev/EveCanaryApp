@@ -66,27 +66,29 @@
                 No current danger..
                 <br>
             {% endif %}
-            <form class="form" method="POST" role="form" id="update_info">
-                <input value="true" type="hidden" name="run_app">
-                <input type="submit" id="mixBut" value="Run Analyzer">
+            <form class="form" method="POST" role="form" id="update_info" onclick="Update()" onsubmit="ChangeCommand()">
+                <input id="mixBut" type="submit" value="Run Analyzer">
+                <input id="command" type="hidden" value="true" name="run_app">
                 <script>
-                    var mixBut = document.getElementById("mixBut");
-                    var typeChange = document.getElementsByName("run_app");
-
-                    mixBut.addEventListener("click", Start);
-
-                    function Start() {
-                        mixBut.removeEventListener("click", Start);
-                        mixBut.addEventListener("click", Stop);
-                        mixBut.value = "Stop Analyzer";
-                        typeChange.name = "stop_app";
+                    function Update() {
+                        var mixBut = document.getElementById("mixBut");
+                        if(mixBut.value === "Run Analyzer") {
+                            mixBut.value = "Stop Analyzer";
+                        }
+                        else {
+                            mixBut.value = "Run Analyzer";
+                        }
                     }
 
-                    function Stop() {
-                        mixBut.removeEventListener("click", Stop);
-                        mixBut.addEventListener("click", Start);
-                        mixBut.value = "Run Analyzer";
-                        typeChange.name = "run_app";
+                    function ChangeCommand() {
+                        var commChange = document.getElementById("command");
+                        if(commChange.name === "run_app") {
+                            commChange.name = "stop_app";
+                        }
+
+                        else {
+                            commChange.name = "run_app";
+                        }
                     }
                 </script>
             </form>
