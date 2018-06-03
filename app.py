@@ -271,17 +271,18 @@ def index():
         hours = session['hours']
 
         if request.method == 'POST':
-            if 'stop_app' in request.form:
-                print("WE'VE BEEN TOLD TO STOP. \n")
-
-        if request.method == 'POST':
-            # Find the danger systems
-            if 'run_app' in request.form:
+            if 'run_watchkeep' in request.form:
                 char_location = char_system_info['system_id']
-                systems_with_kill = find_danger_systems(char_location=str(char_location), num_jumps=int(num_of_jumps), hours=int(hours))
-        current_char_location = char_system_info['name']
-        if systems_with_kill:
-            num_of_kills = systems_with_kill.__len__()
+                systems_with_kill = find_danger_systems(char_location=str(char_location), num_jumps=int(num_of_jumps), minutes=5)
+
+            elif 'run_app' in request.form:
+                char_location = char_system_info['system_id']
+                systems_with_kill = find_danger_systems(char_location=str(char_location), num_jumps=int(num_of_jumps), minutes=(float(hours)*60))
+
+            current_char_location = char_system_info['name']
+
+            if systems_with_kill:
+                num_of_kills = systems_with_kill.__len__()
     return render_template('base.html', **{
         'char_location': current_char_location,
         'char_avatar_url': 'https://image.eveonline.com/Character/' + str(character_id) + '_256.jpg',

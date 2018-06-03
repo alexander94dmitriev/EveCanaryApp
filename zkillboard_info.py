@@ -21,12 +21,12 @@ def get_Zkillboard_data(solar_system_id, minutes_range):
     json_obj = json.loads(contents)
 
     start_time = datetime.datetime(start_time.year, start_time.month, start_time.day, start_time.hour, start_time.minute, start_time.second)
-    current_time = datetime.datetime(start_time.year, start_time.month, start_time.day, start_time.hour, start_time.minute, start_time.second)
+    boundary_time = (start_time - datetime.timedelta(minutes_range))
+
     if json_obj:
         for item in json_obj:
-            #new_killmail_time = datetime.datetime.strptime(item['killmail_time'], '%Y-%m-%dT%H:%M:%SZ')
-            #if current_time >= new_killmail_time >= start_time:
-            #    if item['solar_system_id'] not in danger_system:
-                    danger_system = item['solar_system_id']
+            new_killmail_time = datetime.datetime.strptime(item['killmail_time'], '%Y-%m-%dT%H:%M:%SZ')
+            if current_time >= new_killmail_time >= start_time:
+                danger_system = item['solar_system_id']
 
     return danger_system

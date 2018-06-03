@@ -47,7 +47,7 @@ def scan_systems(char_location = '30001005', num_jumps = 2, refresh_rate = 60., 
     #recurring checks
     refresh_scan(adj_systems, refresh_rate, recur_time)
 
-def find_danger_systems(char_location = '30001005', num_jumps = 2, hours=4):
+def find_danger_systems(char_location = '30001005', num_jumps = 2, minutes=4):
 
     # Creates the list of adjacent systems, including base system
     systems = list(build_graph_wrapper(char_location, num_jumps))
@@ -58,7 +58,7 @@ def find_danger_systems(char_location = '30001005', num_jumps = 2, hours=4):
     danger_systems = []
 
     for system in systems:
-        check_system = get_Zkillboard_data(system, hours)
+        check_system = get_Zkillboard_data(system, minutes)
         if check_system:
             danger_systems.append(check_system)
 
