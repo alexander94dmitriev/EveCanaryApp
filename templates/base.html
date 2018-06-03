@@ -66,32 +66,59 @@
                 No current danger..
                 <br>
             {% endif %}
-            <form class="form" method="POST" role="form" id="update_info" onclick="Update()" onsubmit="ChangeCommand()">
-                <input id="mixBut" type="submit" value="Run Analyzer">
-                <input id="command" type="hidden" value="true" name="run_app">
+            <form class="form" method="POST" role="form" id="run" onclick="Update1()">
+                <input id="mixBut1" type="submit" value="Run Analyzer">
+                <input id="command1" type="hidden" value="true" name="run_app">
                 <script>
-                    function Update() {
-                        var mixBut = document.getElementById("mixBut");
-                        if(mixBut.value === "Run Analyzer") {
-                            mixBut.value = "Stop Analyzer";
-                        }
-                        else {
-                            mixBut.value = "Run Analyzer";
-                        }
-                    }
-
-                    function ChangeCommand() {
-                        var commChange = document.getElementById("command");
-                        if(commChange.name === "run_app") {
-                            commChange.name = "stop_app";
-                        }
-
-                        else {
-                            commChange.name = "run_app";
-                        }
+                    function Update1() {
+                        var mixBut = document.getElementById("mixBut1");
+                        mixBut.value = "Checking.."
                     }
                 </script>
             </form>
+            <br><br>
+            <div id="description">
+                Auto-checks every minute for nearby danger.<br>
+            </div>
+            <form class="form" method="POST" role="form" name="watchkeep" onclick="TextChange()" action="?auto_submit_form=true">
+                <input id="mixBut2" type="submit" value="Keep Watch">
+                <input id="command2" type="hidden" value="true" name="run_watchkeep">
+                <script>
+                    var mixBut = document.getElementById("mixBut2");
+                    mixBut.addEventListener("click", Refresh);
+
+                    var myURL = new URL(window.location);
+                    var searchParams = new URLSearchParams(myURL.search);
+
+                    if(myURL.has("auto_submit_form=true")) {
+                        Refresh();
+                    }
+
+                    function Refresh() {
+                        setTimeout(Update2, 15000);
+                    }
+
+                    function Update2() {
+                        document.forms["watchkeep"].submit();
+                        TextChange();
+                    }
+
+                    function TextChange() {
+                        mixBut.value = "Watching..";
+                    }
+                </script>
+            </form>
+            <button type="button" value="Stop" >
+                Stop
+                <script>
+                    var otherButton = document.getElementById("watchkeep");
+                    otherButton.addEventListener("click", Stop);
+
+                    function Stop() {
+                        otherButton.clearInterval();
+                    }
+                </script>
+            </button>
         </td>
     </tr>
 </table>
