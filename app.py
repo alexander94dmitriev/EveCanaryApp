@@ -270,17 +270,17 @@ def index():
             session['hours'] = '1'
         hours = session['hours']
 
+        current_char_location = char_system_info['name']
+
         if request.method == 'POST':
             if 'run_watchkeep' in request.form:
-                print("WE'RE LOOPING THE WATCH!\n");
+                print("WE'RE LOOPING THE WATCH!\n")
                 char_location = char_system_info['system_id']
                 systems_with_kill = find_danger_systems(char_location=str(char_location), num_jumps=int(num_of_jumps), minutes=5)
 
             elif 'run_app' in request.form:
                 char_location = char_system_info['system_id']
                 systems_with_kill = find_danger_systems(char_location=str(char_location), num_jumps=int(num_of_jumps), minutes=(float(hours)*60))
-
-            current_char_location = char_system_info['name']
 
             if systems_with_kill:
                 num_of_kills = systems_with_kill.__len__()
