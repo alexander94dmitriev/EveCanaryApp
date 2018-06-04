@@ -67,6 +67,10 @@ def build_graph(root, current_location, max_depth):
     build_graph(root, stargate_destination, max_depth)
 
 def build_graph_wrapper(char_location='30002267', num_of_jumps=6):
+    #empty queue and graph in case there's content in it
+    queue.clear()
+    graph.clear()
+
     # Current location of Kaleb Plaude
     queue.append(char_location)
     graph.add_node(char_location)
