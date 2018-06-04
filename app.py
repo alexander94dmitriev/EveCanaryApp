@@ -272,6 +272,7 @@ def index():
 
         if request.method == 'POST':
             if 'run_watchkeep' in request.form:
+                print("WE'RE LOOPING THE WATCH!\n");
                 char_location = char_system_info['system_id']
                 systems_with_kill = find_danger_systems(char_location=str(char_location), num_jumps=int(num_of_jumps), minutes=5)
 

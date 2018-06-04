@@ -8,14 +8,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <title>EVE Canary</title>
-
 </head>
 
 <body style="background-color: lightslategrey">
+<script>
+    window.onload = CheckForRefresh;
+
+    function CheckForRefresh() {
+        if(/auto_submit_form=true/u.test(window.location.search)) {
+            setTimeout(AutoSubmit, 300000);
+        }
+    }
+
+    function AutoSubmit() {
+        TextChange();
+        document.forms["watchkeep"].submit();
+    }
+</script>
+
 <h1>EVE Canary</h1>
 <strong>
     EVE Canary: Find hostile activity near you!
 </strong>
+
 {% if not current_user.is_authenticated %}
 <br>
 <a href="{{ url_for('login') }}">
@@ -23,7 +38,6 @@
 </a>
 
 {% else %}
-
 <table class="fancyTable" style="width: 40%">
     <tr style="border: 1px solid black">
         <td style="border: 1px solid black">
@@ -80,42 +94,22 @@
             <div id="description">
                 Auto-checks every minute for nearby danger.<br>
             </div>
-            <form class="form" method="POST" role="form" name="watchkeep" onclick="TextChange()" action="?auto_submit_form=true">
+            <form class="form" method="POST" role="form" id="watchkeep" onclick="TextChange()" action="?auto_submit_form=true">
                 <input id="mixBut2" type="submit" value="Keep Watch">
                 <input id="command2" type="hidden" value="true" name="run_watchkeep">
+
                 <script>
-                    var mixBut = document.getElementById("mixBut2");
-                    mixBut.addEventListener("click", Refresh);
-
-                    var myURL = new URL(window.location);
-                    var searchParams = new URLSearchParams(myURL.search);
-
-                    if(myURL.has("auto_submit_form=true")) {
-                        Refresh();
-                    }
-
-                    function Refresh() {
-                        setTimeout(Update2, 15000);
-                    }
-
-                    function Update2() {
-                        document.forms["watchkeep"].submit();
-                        TextChange();
-                    }
-
                     function TextChange() {
+                        var mixBut = document.getElementById("mixBut2");
                         mixBut.value = "Watching..";
                     }
                 </script>
             </form>
-            <button type="button" value="Stop" >
+            <button type="button" value="Stop" onclick="Stop()">
                 Stop
                 <script>
-                    var otherButton = document.getElementById("watchkeep");
-                    otherButton.addEventListener("click", Stop);
-
                     function Stop() {
-                        otherButton.clearInterval();
+                        window.location.href = window.location.href.replace("/?auto_submit_form=true", "/");
                     }
                 </script>
             </button>
