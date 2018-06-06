@@ -1,23 +1,19 @@
-# EveCanaryTestRepo
-Test Repository for a Eve Canary prototype app
+# Eve Canary
+This web-application allows to find a killmail information in the systems nearby the player.
+You can specify the number of jumps you want to search and go through and you also can specify how far (in hours) you want to check the info.
 
-
-Things to do:
-- Practice Python
-- Work on getting a requests from EsiPy about character and location
-- Use the info provided to get requests on Zkillerboard API
-
+###APIs used:
 Eve API:
-https://github.com/Kyria/EsiPy
-
+https://github.com/Kyria/EsiPy   
 ZkillBoard API:
 https://github.com/zKillboard/RedisQ    
-https://github.com/zKillboard/zKillboard/wiki/API-(Killmails)   
-
-Template:
+Template webapp:
 https://github.com/Kyria/flask-esipy-example
 
-Before the run do:
+###Dependencies:
+Specified in requirements.txt
+
+###Setup:   
 
 `export FLASK_APP=app.py`
 
