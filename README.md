@@ -13,7 +13,7 @@ https://github.com/Kyria/flask-esipy-example
 ### Dependencies:
 Specified in requirements.txt
 
-### Setup:   
+### Setup and Run:   
 
 `export FLASK_APP=app.py`
 
