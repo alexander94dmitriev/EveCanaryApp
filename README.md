@@ -18,3 +18,5 @@ Specified in requirements.txt
 `export FLASK_APP=app.py`
 
 `flask db upgrade`
+
+`flask run`
